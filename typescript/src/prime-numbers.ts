@@ -4,8 +4,8 @@ function isPrimeNumber(num: number) {
 	const firstHalf = Math.round(num / 2)
 	const secondHalf = num - firstHalf
 
-	let currentFirst = firstHalf === 1 ? num + 1 : 0
-	let currentSecond = secondHalf === 1 ? num + 1 : 0
+	let currentFirst = firstHalf <= 1 ? num + 1 : 0
+	let currentSecond = secondHalf <= 1 ? num + 1 : 0
 	let index = 2
 
 	while(currentFirst < num || currentSecond < num) {
