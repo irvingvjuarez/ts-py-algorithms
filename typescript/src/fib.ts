@@ -1,7 +1,15 @@
-function fib(index: number): number {
-	if (index <= 2) return 1
+type MemoObject = {
+	[key: number]: number
+}
 
-	return fib(index - 1) + fib(index - 2)
+function fib(index: number, obj: MemoObject = {}): number {
+	if (index <= 2) {
+		return 1
+	} else if (index in obj) {
+		return obj[index]
+	}
+
+	return obj[index] = fib(index - 1, obj) + fib(index - 2, obj)
 }
 
 console.log(
