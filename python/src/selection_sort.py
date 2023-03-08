@@ -14,13 +14,13 @@ def selection_sort(numbers: Numbers):
 		for sub_index, current in enumerate(comparison_numbers):
 			sub_index += index + 1
 			if current < minimum_number["value"]:
-				minimum_number["value"] = current
-				minimum_number["index"] = sub_index
+				minimum_number["value"], minimum_number["index"] = current, sub_index
+
+		min_num = minimum_number["value"]
+		min_num_index = minimum_number["index"]
 
 		if number != minimum_number["value"]:
-			greater = number
-			numbers[minimum_number["index"]] = greater
-			numbers[index] = minimum_number["value"]
+			numbers[min_num_index], number[index] = number, min_num
 
 	return numbers
 
