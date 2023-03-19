@@ -32,11 +32,6 @@ function getMaxGifts(giftsCities: Array<number>, maxGifts: number, maxCities: nu
 	return bestFit > maxGifts ? 0 : bestFit
 }
 
-const giftsCities = [12, 3, 11, 5, 7]
-const maxGifts = 20
-const maxCities = 3
-
-
 console.log(getMaxGifts([12, 3, 11, 5, 7], 20, 3)) // 20
 console.log(getMaxGifts([50], 15, 1)) // 0
 console.log(getMaxGifts([50], 100, 1)) // 50
