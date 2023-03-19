@@ -16,7 +16,7 @@ const cube = createCube(3)
   \/_/_/_/
 ```
 
-As you can see, the cube has three faces visually. The symbols used to build the cube faces are: /, \, _. In order to make the cube, some spaces are needed. Also, each line is separated by a new line character \n.
+As you can see, the cube has three faces visually. The symbols used to build the cube faces are: `/`, `\`, `_`. In order to make the cube, some spaces are needed. Also, each line is separated by a new line character `\n`.
 
 Other examples of cubes:
 
