@@ -1,4 +1,5 @@
 function iterateThruCities(value: number, maxLevel: number, elements: Array<number>, limit: number, count: number): number {
+	if (value === limit) return value
 	if (value > limit) return 0
 	if (count >= maxLevel) return value
 
@@ -35,11 +36,11 @@ const giftsCities = [12, 3, 11, 5, 7]
 const maxGifts = 20
 const maxCities = 3
 
+
 console.log(getMaxGifts([12, 3, 11, 5, 7], 20, 3)) // 20
 console.log(getMaxGifts([50], 15, 1)) // 0
 console.log(getMaxGifts([50], 100, 1)) // 50
 console.log(getMaxGifts([50, 70], 100, 1)) // 70
 console.log(getMaxGifts([50, 70, 30], 100, 2)) // 100
-
 console.log(getMaxGifts([50, 70, 30], 100, 3)) // 100
 console.log(getMaxGifts([50, 70, 30], 100, 4)) // 100
