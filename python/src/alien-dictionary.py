@@ -7,8 +7,18 @@ def alien_dictionary(words: List[str], order: str) -> bool:
 	less_than_minimum = words_length < 1
 	more_than_maximum = words_length > 100
 	diff_order_length = len(order) != 26
+	some_uppercase_in_order = not order.islower()
+	some_uppercase_in_words = not "".join(words).islower()
 
-	if less_than_minimum or more_than_maximum or diff_order_length:
+	possible_exception_causes = [
+		less_than_minimum,
+		more_than_maximum,
+		diff_order_length,
+		some_uppercase_in_order,
+		some_uppercase_in_words
+	]
+
+	if any(possible_exception_causes):
 		raise Exception()
 
 	return False
@@ -32,6 +42,25 @@ class AlienDictionaryTestCases(unittest.TestCase):
 
 		order = "abcdefghijklmnopqrstuvwxyzA" # 27
 		self.assertRaises(Exception, alien_dictionary, words, order)
+
+	# expecting all chars in order to be lowercase
+	def test_order_lowercase(self):
+		words = ["ksi", "hds", "kshjd"]
+		order = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" # all uppercase
+		self.assertRaises(Exception, alien_dictionary, words, order)
+
+		order = "abcdefghijklmnopqrstuvwxyZ" # one uppercase
+		self.assertRaises(Exception, alien_dictionary, words, order)
+
+	# expecting all chars in words to be lowercase
+	def test_words_lowercase(self):
+		order = "abcdefghijklmnopqrstuvwxyz"
+		words = ["UAYE", "IUYT", "KSJ"] # all uppercase
+		self.assertRaises(Exception, alien_dictionary, words, order)
+
+		words = ["oius", "iu", "jsJ"] # one char uppercase
+		self.assertRaises(Exception, alien_dictionary, words, order)
+
 
 if __name__ == "__main__":
 	unittest.main()
