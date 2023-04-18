@@ -1,6 +1,31 @@
 import unittest
 from typing import List
 
+# POINTER SETTLED TO DEFAULT VALUES
+master_pointer = { "word": 0, "char": 0 }
+slave_pointer = { "word": 1, "char": 0 }
+
+# VALIDATIONS DECLARED
+master_char_gt = None
+master_word_gt = None
+
+slave_char_gt = None
+slave_word_gt = None
+
+
+# FUNCTION TO CREATE/UPDATE VALIDATIONS
+def set_validations(words: List[str]):
+	# Checking if the current character is not greater than the word length
+	# Expected behavior to be False
+	master_char_gt = master_pointer.char + 1 > len(words[master_pointer.word])
+	slave_char_gt = slave_pointer.char + 1 > len(words[slave_pointer.word])
+
+	# Checking that the word index is not greater than the word list length
+	master_word_gt = master_pointer.word + 1 > len(words)
+	slave_word_gt = slave_pointer.word + 1 > len(words)
+
+
+# MAIN FUNCTION
 def alien_dictionary(words: List[str], order: str) -> bool:
 	words_length = len(words)
 
@@ -21,7 +46,56 @@ def alien_dictionary(words: List[str], order: str) -> bool:
 	if any(possible_exception_causes):
 		raise Exception()
 
-	return False
+	# VALIDATIONS CREATED
+	set_validations()
+
+	# Initializing result variable to True as default
+	result = True
+
+	# WHILE LOOP TO KEEP RUNNING THE PROGRAM
+	while (not master_word_gt) or (not slave_word_gt):
+
+		# CONDITIONALS
+
+		# Checking if char overpassed the limit
+		if master_char_gt or slave_char_gt:
+			# Increasing word prop by one
+			master_pointer.word += 1
+			slave_pointer.word += 1
+
+			# Resetting char value to 0
+			master_pointer.char = 0
+			slave_pointer.char = 0
+
+		else:
+			# VALIDATIONS OF THE ACTUAL ALGORITHM
+
+			# getting value of current chars in terms of the given order
+			master_current_char = words[master_pointer.word][master_pointer.char]
+			master_char_val = order.index(master_current_char)
+
+			slave_current_char = words[slave_pointer.word][slave_pointer.char]
+			slave_char_val = order.index(slave_current_char)
+
+			if master_char_val < slave_char_val:
+				# Setting result value to False
+				result = False
+
+				# Breaking while loop
+				master_word_gt = True
+				slave_word_gt = True
+
+			else:
+				# Char props increase by one
+				master_pointer.char += 1
+				slave_pointer.char += 1
+
+				# Validations are updated
+				set_validations()
+
+	return result
+
+
 
 class AlienDictionaryTestCases(unittest.TestCase):
 	def test_being_function(self):
@@ -60,6 +134,10 @@ class AlienDictionaryTestCases(unittest.TestCase):
 
 		words = ["oius", "iu", "jsJ"] # one char uppercase
 		self.assertRaises(Exception, alien_dictionary, words, order)
+
+	def test_return_true(self):
+		result = alien_dictionary(["hello","leetcode"], "hlabcdefgijkmnopqrstuvwxyz")
+		self.assertTrue(result)
 
 
 if __name__ == "__main__":
