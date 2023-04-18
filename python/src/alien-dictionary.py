@@ -13,6 +13,10 @@ slave_char_gt = False
 slave_word_gt = False
 
 
+# Initializing result variable to True as default
+result = True
+
+
 # FUNCTION TO CREATE/UPDATE VALIDATIONS
 def set_validations(words: List[str]):
 	global master_word_gt
@@ -29,6 +33,19 @@ def set_validations(words: List[str]):
 	master_char_gt = True if master_word_gt else master_pointer["char"] + 1 > len(words[master_pointer["word"]])
 	slave_char_gt = True if slave_word_gt else slave_pointer["char"] + 1 > len(words[slave_pointer["word"]])
 
+
+# FUNCTION TO SET RESULT TO FALSE
+def turning_to_false():
+	global result
+	global master_word_gt
+	global slave_word_gt
+
+	# Setting result value to False
+	result = False
+
+	# Breaking while loop
+	master_word_gt = True
+	slave_word_gt = True
 
 
 # MAIN FUNCTION
@@ -59,25 +76,30 @@ def alien_dictionary(words: List[str], order: str) -> bool:
 	global master_char_gt
 	global slave_char_gt
 
-	# Initializing result variable to True as default
-	result = True
-
 	# WHILE LOOP TO KEEP RUNNING THE PROGRAM
 	while (not master_word_gt) or (not slave_word_gt):
 		# CONDITIONALS
 
 		# Checking if char overpassed the limit
 		if master_char_gt or slave_char_gt:
-			# Increasing word prop by one
-			master_pointer["word"] += 1
-			slave_pointer["word"] += 1
+			# Validate words lengths
+			master_length = len(words[master_pointer["word"]])
+			slave_length = len(words[slave_pointer["word"]])
 
-			# Resetting char value to 0
-			master_pointer["char"] = 0
-			slave_pointer["char"] = 0
+			if master_length > slave_length:
+				# Increasing word prop by one
+				master_pointer["word"] += 1
+				slave_pointer["word"] += 1
 
-			# Validations are updated
-			set_validations(words)
+				# Resetting char value to 0
+				master_pointer["char"] = 0
+				slave_pointer["char"] = 0
+
+				# Validations are updated
+				set_validations(words)
+
+			else:
+				turning_to_false()
 
 		else:
 			# VALIDATIONS OF THE ACTUAL ALGORITHM
@@ -100,14 +122,9 @@ def alien_dictionary(words: List[str], order: str) -> bool:
 				set_validations(words)
 
 			else:
+				turning_to_false()
 
-				# Setting result value to False
-				result = False
-
-				# Breaking while loop
-				master_word_gt = True
-				slave_word_gt = True
-
+	global result
 
 	return result
 
@@ -151,8 +168,14 @@ class AlienDictionaryTestCases(unittest.TestCase):
 		words = ["oius", "iu", "jsJ"] # one char uppercase
 		self.assertRaises(Exception, alien_dictionary, words, order)
 
-	def test_return_true(self):
+	def test_return_false(self):
 		result = alien_dictionary(["hello","leetcode"], "hlabcdefgijkmnopqrstuvwxyz")
+		self.assertFalse(result)
+
+		result = alien_dictionary(["word","world","row"], "worldabcefghijkmnpqstuvxyz")
+		self.assertFalse(result)
+
+		result = alien_dictionary(["app","apple"], "abcdefghijklmnopqrstuvwxyz")
 		self.assertFalse(result)
 
 
