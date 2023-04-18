@@ -6,23 +6,29 @@ master_pointer = { "word": 0, "char": 0 }
 slave_pointer = { "word": 1, "char": 0 }
 
 # VALIDATIONS DECLARED
-master_char_gt = None
-master_word_gt = None
+master_char_gt = False
+master_word_gt = False
 
-slave_char_gt = None
-slave_word_gt = None
+slave_char_gt = False
+slave_word_gt = False
 
 
 # FUNCTION TO CREATE/UPDATE VALIDATIONS
 def set_validations(words: List[str]):
-	# Checking if the current character is not greater than the word length
-	# Expected behavior to be False
-	master_char_gt = master_pointer.char + 1 > len(words[master_pointer.word])
-	slave_char_gt = slave_pointer.char + 1 > len(words[slave_pointer.word])
+	global master_word_gt
+	global slave_word_gt
+	global master_char_gt
+	global slave_char_gt
 
 	# Checking that the word index is not greater than the word list length
-	master_word_gt = master_pointer.word + 1 > len(words)
-	slave_word_gt = slave_pointer.word + 1 > len(words)
+	master_word_gt = master_pointer["word"] + 1 > len(words)
+	slave_word_gt = slave_pointer["word"] + 1 > len(words)
+
+	# Checking if the current character is not greater than the word length
+	# Expected behavior to be False
+	master_char_gt = True if master_word_gt else master_pointer["char"] + 1 > len(words[master_pointer["word"]])
+	slave_char_gt = True if slave_word_gt else slave_pointer["char"] + 1 > len(words[slave_pointer["word"]])
+
 
 
 # MAIN FUNCTION
@@ -46,38 +52,55 @@ def alien_dictionary(words: List[str], order: str) -> bool:
 	if any(possible_exception_causes):
 		raise Exception()
 
-	# VALIDATIONS CREATED
-	set_validations()
+	# VALIDATIONS CREATED AND REASSIGNED TO BE USED IN NESTED SCOPES
+	set_validations(words)
+	global master_word_gt
+	global slave_word_gt
+	global master_char_gt
+	global slave_char_gt
 
 	# Initializing result variable to True as default
 	result = True
 
 	# WHILE LOOP TO KEEP RUNNING THE PROGRAM
 	while (not master_word_gt) or (not slave_word_gt):
-
 		# CONDITIONALS
 
 		# Checking if char overpassed the limit
 		if master_char_gt or slave_char_gt:
 			# Increasing word prop by one
-			master_pointer.word += 1
-			slave_pointer.word += 1
+			master_pointer["word"] += 1
+			slave_pointer["word"] += 1
 
 			# Resetting char value to 0
-			master_pointer.char = 0
-			slave_pointer.char = 0
+			master_pointer["char"] = 0
+			slave_pointer["char"] = 0
+
+			# Validations are updated
+			set_validations(words)
 
 		else:
 			# VALIDATIONS OF THE ACTUAL ALGORITHM
 
 			# getting value of current chars in terms of the given order
-			master_current_char = words[master_pointer.word][master_pointer.char]
+			master_current_char = words[master_pointer["word"]][master_pointer["char"]]
 			master_char_val = order.index(master_current_char)
 
-			slave_current_char = words[slave_pointer.word][slave_pointer.char]
+			slave_current_char = words[slave_pointer["word"]][slave_pointer["char"]]
 			slave_char_val = order.index(slave_current_char)
 
-			if master_char_val < slave_char_val:
+			# Expecting the master value to be less than the slave one
+			if master_char_val <= slave_char_val:
+
+				# Char props increase by one
+				master_pointer["char"] += 1
+				slave_pointer["char"] += 1
+
+				# Validations are updated
+				set_validations(words)
+
+			else:
+
 				# Setting result value to False
 				result = False
 
@@ -85,13 +108,6 @@ def alien_dictionary(words: List[str], order: str) -> bool:
 				master_word_gt = True
 				slave_word_gt = True
 
-			else:
-				# Char props increase by one
-				master_pointer.char += 1
-				slave_pointer.char += 1
-
-				# Validations are updated
-				set_validations()
 
 	return result
 
@@ -137,7 +153,7 @@ class AlienDictionaryTestCases(unittest.TestCase):
 
 	def test_return_true(self):
 		result = alien_dictionary(["hello","leetcode"], "hlabcdefgijkmnopqrstuvwxyz")
-		self.assertTrue(result)
+		self.assertFalse(result)
 
 
 if __name__ == "__main__":

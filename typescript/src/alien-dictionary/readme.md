@@ -11,11 +11,11 @@ order = "hlabcdefgijkmnopqrstuvwxyz"
 
 OUTPUT
 ```js
-true
+false
 ```
 
 REASON
-*As 'h' comes before 'l' in this language, then the sequence is sorted.*
+*In the fifth letter of both words, `c` is lower than `o` in terms of the given order of the alien alphabet.*
 
 
 ### Example 2
