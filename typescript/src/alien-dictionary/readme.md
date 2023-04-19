@@ -37,3 +37,8 @@ isAlienSorted(words3, order3);
 // Output:
 false
 ```
+
+Considera lo siguiente:
+- El alfabeto foraneo debera ser de 25 caracteres
+- El máximo número de palabras es 100
+- El mínimo número de palabras es 1

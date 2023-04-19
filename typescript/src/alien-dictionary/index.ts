@@ -1,10 +1,9 @@
 async function alienDictionary(words: string[], order: string) {
-	const ltMinWordsLength = words.length < 1;
-	const emptyOrder = (order == "")
+	const ltWordsLength = words.length < 1;
+	const gtWordsLength = words.length > 100;
+	const wordsLengthValidations = ltWordsLength || gtWordsLength
 
-	if (ltMinWordsLength || emptyOrder) {
-		throw new Error("Invalid parameters")
-	}
+	if (wordsLengthValidations) throw new Error("Invalid words length")
 }
 
 export default alienDictionary
