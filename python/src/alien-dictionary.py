@@ -77,7 +77,7 @@ def alien_dictionary(words: List[str], order: str) -> bool:
 	global slave_char_gt
 
 	# WHILE LOOP TO KEEP RUNNING THE PROGRAM
-	while (not master_word_gt) or (not slave_word_gt):
+	while (not master_word_gt) and (not slave_word_gt):
 		# CONDITIONALS
 
 		# Checking if char overpassed the limit
@@ -86,7 +86,7 @@ def alien_dictionary(words: List[str], order: str) -> bool:
 			master_length = len(words[master_pointer["word"]])
 			slave_length = len(words[slave_pointer["word"]])
 
-			if master_length > slave_length:
+			if master_length >= slave_length:
 				# Increasing word prop by one
 				master_pointer["word"] += 1
 				slave_pointer["word"] += 1
@@ -110,6 +110,10 @@ def alien_dictionary(words: List[str], order: str) -> bool:
 
 			slave_current_char = words[slave_pointer["word"]][slave_pointer["char"]]
 			slave_char_val = order.index(slave_current_char)
+
+			# Debugging
+			print("Master value:", master_char_val)
+			print("Slave value:", slave_char_val)
 
 			# Expecting the master value to be less than the slave one
 			if master_char_val <= slave_char_val:
@@ -178,6 +182,15 @@ class AlienDictionaryTestCases(unittest.TestCase):
 		result = alien_dictionary(["app","apple"], "abcdefghijklmnopqrstuvwxyz")
 		self.assertFalse(result)
 
+	def test_return_true(self):
+		result = alien_dictionary(["hello","leets", "miku"], "hlabcdefgijkmnopqrstuvwxyz")
+		print("Last result:", result)
+
+		self.assertTrue(result)
+
 
 if __name__ == "__main__":
 	unittest.main()
+
+	# result = alien_dictionary(["hello","leets", "miku"], "hlabcdefgijkmnopqrstuvwxyz")
+	# print("Result:", result)

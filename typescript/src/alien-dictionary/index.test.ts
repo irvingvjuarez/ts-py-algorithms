@@ -16,4 +16,9 @@ describe("Testing alien-dictionary", () => {
 		// exceedingWordsLength variable is an array with 101 words, which is invalid
 		await expect(() => alienDictionary(exceedingWordsLength, alienAlphabet)).rejects.toThrow("Invalid words length")
 	})
+
+	test("order length must be only 25 characters", async () => {
+		await expect(() => alienDictionary(["Hello"], "")).rejects.toThrow("Invalid order length")
+		await expect(() => alienDictionary(["Hello"], "abcdefghijkmnopqrstuvwxyzs")).rejects.toThrow("Invalid order length")
+	})
 })
