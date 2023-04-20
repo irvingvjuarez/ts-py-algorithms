@@ -9,7 +9,7 @@ describe("Testing alien-dictionary", () => {
 	})
 
 	test("words param should be >= 1 && <= 100", async () => {
-		const alienAlphabet = "abcdefghijkmnopqrstuvwxyz"
+		const alienAlphabet = "hlabcdefgijkmnopqrstuvwxyz"
 
 		await expect(() => alienDictionary([], alienAlphabet)).rejects.toThrow("Invalid words length")
 
@@ -19,6 +19,16 @@ describe("Testing alien-dictionary", () => {
 
 	test("order length must be only 25 characters", async () => {
 		await expect(() => alienDictionary(["Hello"], "")).rejects.toThrow("Invalid order length")
-		await expect(() => alienDictionary(["Hello"], "abcdefghijkmnopqrstuvwxyzs")).rejects.toThrow("Invalid order length")
+		await expect(() => alienDictionary(["Hello"], "abcdefghijkmnopqrstuvwxyz")).rejects.toThrow("Invalid order length")
+	})
+
+	test("Function should return a boolean", async () => {
+		const output = await alienDictionary(["Hello"], "hlabcdefgijkmnopqrstuvwxyz")
+		expect(output).toBeTypeOf("boolean")
+	})
+
+	test("Inputs where the expected result should be False", async () => {
+		const output = await alienDictionary(["hello","leetcode"], "hlabcdefgijkmnopqrstuvwxyz")
+		expect(output).toBe(false)
 	})
 })
