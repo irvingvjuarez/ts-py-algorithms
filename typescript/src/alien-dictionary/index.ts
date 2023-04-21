@@ -5,6 +5,7 @@ const ORDER_LENGTH = 26;
 async function alienDictionary(words: string[], order: string) {
 	const WORDS_LENGTH = words.length;
 
+	// Main validations
 	const ltWordsLength = WORDS_LENGTH < MIN_WORDS_LENGTH;
 	const gtWordsLength = WORDS_LENGTH > MAX_WORDS_LENGTH;
 	const wordsLengthValidations = ltWordsLength || gtWordsLength
@@ -18,20 +19,29 @@ async function alienDictionary(words: string[], order: string) {
 	// Declaring the result as true by default
 	let result = true
 
+	// If it has only one word, return true as default
+	if (WORDS_LENGTH === 1) {
+		return result
+	}
+
 	// Creation of hash map
-	const WORDS_INDEX = {}
-	words.forEach((word, index) => WORDS_INDEX[word] = index + 1)
+	const CHAR_INDEX = {}
+	order.split("").forEach((char, index) => CHAR_INDEX[char] = index + 1)
 
 	// Creation of the pointers
 	const master = { word: 0, char: 0, charValue: 0 }
 	const slave = { word: 1, char: 0, charValue: 0 }
 
-	// Assigning charValue prop to each pointer
-	const masterCurrentChar = words[master.word][master.char]
-	master.charValue = WORDS_INDEX[masterCurrentChar]
+	const updateCharValues = () => {
+		// Assigning charValue prop to each pointer
+		const masterCurrentChar = words[master.word][master.char]
+		master.charValue = CHAR_INDEX[masterCurrentChar]
 
-	const slaveCurrentChar = words[slave.word][slave.char]
-	slave.charValue = WORDS_INDEX[slaveCurrentChar]
+		const slaveCurrentChar = words[slave.word][slave.char]
+		slave.charValue = CHAR_INDEX[slaveCurrentChar]
+	}
+
+	updateCharValues()
 
 	// Initializing validations
 	let masterPointingToValidWord, slavePointingToValidWord, validWords, lexicographicOrder
@@ -42,7 +52,11 @@ async function alienDictionary(words: string[], order: string) {
 		slavePointingToValidWord = slave.word + 1 <= WORDS_LENGTH;
 		validWords = masterPointingToValidWord && slavePointingToValidWord;
 
-		lexicographicOrder = master.charValue < slave.charValue;
+		lexicographicOrder = master.charValue <= slave.charValue;
+
+		if (!lexicographicOrder) {
+			result = false
+		}
 	}
 
 	// Declaring validations
@@ -51,6 +65,8 @@ async function alienDictionary(words: string[], order: string) {
 	// Loop
 	while(validWords && lexicographicOrder) {
 		// TODO: logging master and slave current char values
+		// console.log("From while loop")
+		// console.log({ master, slave })
 
 		// Data updated
 		master.char += 1;
@@ -65,6 +81,13 @@ async function alienDictionary(words: string[], order: string) {
 		const validChars = masterPointingToValidChar && slavePointingToValidChar
 
 		if (validChars) {
+			// Updating validations
+			updateValidations()
+
+			// Update char values
+			updateCharValues()
+
+		} else {
 			// Validating words length
 			const isValidLength = masterWordLength < slaveWordLength;
 
@@ -78,19 +101,16 @@ async function alienDictionary(words: string[], order: string) {
 
 				// TODO: repeated code (must be optimized)
 				const masterCurrentChar = words[master.word][master.char]
-				master.charValue = WORDS_INDEX[masterCurrentChar]
+				master.charValue = CHAR_INDEX[masterCurrentChar]
 
 				const slaveCurrentChar = words[slave.word][slave.char]
-				slave.charValue = WORDS_INDEX[slaveCurrentChar]
+				slave.charValue = CHAR_INDEX[slaveCurrentChar]
 			} else {
 				// Finishing the program
 				result = false
 				master.charValue = 1;
 				slave.charValue = 0;
 			}
-		} else {
-			// Updating validations
-			updateValidations()
 		}
 	}
 
