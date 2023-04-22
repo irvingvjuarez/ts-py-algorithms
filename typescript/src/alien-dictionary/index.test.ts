@@ -28,7 +28,15 @@ describe("Testing alien-dictionary", () => {
 	})
 
 	test("Inputs where the expected result should be False", async () => {
-		const output = await alienDictionary(["hello","leetcode"], "hlabcdefgijkmnopqrstuvwxyz")
+		let output = await alienDictionary(["hello","leetcode"], "hlabcdefgijkmnopqrstuvwxyz")
 		expect(output).toBe(false)
+
+		output = await alienDictionary(["word","world","row"], "worldabcefghijkmnpqstuvxyz")
+		expect(output).toBe(false)
+	})
+
+	test("Inputs where the expected result should be True", async () => {
+		const output = await alienDictionary(["hello","leets", "mikus"], "hlabcdefgijkmnopqrstuvwxyz")
+		expect(output).toBe(true)
 	})
 })

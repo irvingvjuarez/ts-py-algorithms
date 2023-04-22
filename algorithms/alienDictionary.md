@@ -53,7 +53,7 @@ REASON
 ### Example 4
 INPUT
 ```js
-words = ["hello","leets", "miku"]
+words = ["hello","leets", "mikus"]
 order = "hlabcdefgijkmnopqrstuvwxyz"
 ```
 
