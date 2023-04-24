@@ -53,6 +53,13 @@ function isLexicographOrdered(master, slave) {
 	return master.charValue <= slave.charValue
 }
 
+function updateValidations(validations, master, slave, WORDS_LENGTH, result) {
+	validations.validWords = areValidWords(master, slave, WORDS_LENGTH);
+	validations.lexicographicOrder = isLexicographOrdered(master, slave);
+
+	return !validations.lexicographicOrder ? false : result
+}
+
 async function alienDictionary(words: string[], order: string) {
 	const WORDS_LENGTH = words.length;
 	const ORDER_LENGTH = order.length
@@ -79,24 +86,17 @@ async function alienDictionary(words: string[], order: string) {
 	updateCharValues({words, CHAR_INDEX, master, slave})
 
 	// Declaring validations
-	let validWords, lexicographicOrder
-
-	// methods
-	const updateValidations = () => {
-		validWords = areValidWords(master, slave, WORDS_LENGTH);
-		lexicographicOrder = isLexicographOrdered(master, slave);
-
-		if (!lexicographicOrder) {
-			result = false
-		}
+	const validations: {[key: string]: boolean | null} = {
+		validWords: null,
+		lexicographicOrder: null
 	}
 
 
 	// Declaring validations
-	updateValidations()
+	result = updateValidations(validations, master, slave, WORDS_LENGTH, result)
 
 	// Loop
-	while(validWords && lexicographicOrder) {
+	while(validations.validWords && validations.lexicographicOrder) {
 		// Data updated
 		master.char += 1;
 		slave.char += 1;
@@ -111,7 +111,7 @@ async function alienDictionary(words: string[], order: string) {
 
 		if (validChars) {
 			// Updating validations
-			updateValidations()
+			result = updateValidations(validations, master, slave, WORDS_LENGTH, result)
 
 			// Update char values
 			updateCharValues({words, CHAR_INDEX, master, slave})
@@ -129,9 +129,9 @@ async function alienDictionary(words: string[], order: string) {
 				slave.char = 0;
 
 				// Updating validations
-				updateValidations()
+				result = updateValidations(validations, master, slave, WORDS_LENGTH, result)
 
-				if (validWords) {
+				if (validations.validWords) {
 					// Update the charValues
 					updateCharValues({words, CHAR_INDEX, master, slave})
 				}
@@ -141,7 +141,7 @@ async function alienDictionary(words: string[], order: string) {
 				slave.charValue = 0;
 
 				// Updating validations
-				updateValidations()
+				result = updateValidations(validations, master, slave, WORDS_LENGTH, result)
 			}
 		}
 	}
