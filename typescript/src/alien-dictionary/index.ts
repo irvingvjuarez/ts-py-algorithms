@@ -43,6 +43,16 @@ const updateCharValues = ({words, CHAR_INDEX, master, slave}) => {
 	slave.charValue = CHAR_INDEX[slaveCurrentChar]
 }
 
+function areValidWords(master, slave, WORDS_LENGTH) {
+	const masterPointingToValidWord = master.word + 1 <= WORDS_LENGTH;
+	const slavePointingToValidWord = slave.word + 1 <= WORDS_LENGTH;
+	return masterPointingToValidWord && slavePointingToValidWord;
+}
+
+function isLexicographOrdered(master, slave) {
+	return master.charValue <= slave.charValue
+}
+
 async function alienDictionary(words: string[], order: string) {
 	const WORDS_LENGTH = words.length;
 	const ORDER_LENGTH = order.length
@@ -69,20 +79,18 @@ async function alienDictionary(words: string[], order: string) {
 	updateCharValues({words, CHAR_INDEX, master, slave})
 
 	// Declaring validations
-	let masterPointingToValidWord, slavePointingToValidWord, validWords, lexicographicOrder
+	let validWords, lexicographicOrder
 
 	// methods
 	const updateValidations = () => {
-		masterPointingToValidWord = master.word + 1 <= WORDS_LENGTH;
-		slavePointingToValidWord = slave.word + 1 <= WORDS_LENGTH;
-		validWords = masterPointingToValidWord && slavePointingToValidWord;
-
-		lexicographicOrder = master.charValue <= slave.charValue;
+		validWords = areValidWords(master, slave, WORDS_LENGTH);
+		lexicographicOrder = isLexicographOrdered(master, slave);
 
 		if (!lexicographicOrder) {
 			result = false
 		}
 	}
+
 
 	// Declaring validations
 	updateValidations()
