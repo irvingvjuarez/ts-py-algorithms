@@ -2,17 +2,24 @@ const MIN_WORDS_LENGTH = 1;
 const MAX_WORDS_LENGTH = 100;
 const ORDER_LENGTH = 26;
 
+function wordsInvalid(wordsSize: number): boolean {
+	const ltWordsLength = wordsSize < MIN_WORDS_LENGTH;
+	const gtWordsLength = wordsSize > MAX_WORDS_LENGTH;
+
+	return ltWordsLength || gtWordsLength
+}
+
+function orderInvalid(orderSize: number): boolean {
+	return orderSize != ORDER_LENGTH;
+}
+
 async function alienDictionary(words: string[], order: string) {
 	const WORDS_LENGTH = words.length;
+	const ORDER_LENGTH = order.length
 
 	// Main validations
-	const ltWordsLength = WORDS_LENGTH < MIN_WORDS_LENGTH;
-	const gtWordsLength = WORDS_LENGTH > MAX_WORDS_LENGTH;
-	const wordsLengthValidations = ltWordsLength || gtWordsLength
-	const invalidOrderLength = order.length != ORDER_LENGTH;
-
-	if (wordsLengthValidations || invalidOrderLength) {
-		const errorParam = invalidOrderLength ? "order" : "words"
+	if (wordsInvalid(WORDS_LENGTH) || orderInvalid(ORDER_LENGTH)) {
+		const errorParam = orderInvalid(ORDER_LENGTH) ? "order" : "words"
 		throw new Error(`Invalid ${errorParam} length`)
 	}
 
