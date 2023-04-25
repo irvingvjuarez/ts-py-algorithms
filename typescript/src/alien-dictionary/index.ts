@@ -53,11 +53,28 @@ function isLexicographOrdered(master, slave) {
 	return master.charValue <= slave.charValue
 }
 
-function updateValidations(validations, master, slave, WORDS_LENGTH, result) {
+function updateValidations(validations, master, slave, WORDS_LENGTH) {
 	validations.validWords = areValidWords(master, slave, WORDS_LENGTH);
 	validations.lexicographicOrder = isLexicographOrdered(master, slave);
+}
 
-	return !validations.lexicographicOrder ? false : result
+function getPointersWordLength(master, slave, words) {
+	const masterWordLength = words[master.word].length
+	const slaveWordLength = words[slave.word].length
+
+	return { masterWordLength, slaveWordLength }
+}
+
+function areCharactersValid(master, slave, words) {
+	const { masterWordLength, slaveWordLength } = getPointersWordLength(master, slave, words)
+
+	const masterPointingToValidChar = master.char < masterWordLength
+	const slavePointingToValidChar = slave.char < slaveWordLength
+
+	const validChars = masterPointingToValidChar && slavePointingToValidChar
+	const isValidLength = masterWordLength <= slaveWordLength
+
+	return { validChars, isValidLength }
 }
 
 async function alienDictionary(words: string[], order: string) {
@@ -71,7 +88,7 @@ async function alienDictionary(words: string[], order: string) {
 	}
 
 	// Declaring the result as true by default
-	let result = true
+	let result: boolean | null = true
 
 	// If it has only one word, return true as default
 	if (onlyOneWord(WORDS_LENGTH)) return result
@@ -93,7 +110,8 @@ async function alienDictionary(words: string[], order: string) {
 
 
 	// Declaring validations
-	result = updateValidations(validations, master, slave, WORDS_LENGTH, result)
+	updateValidations(validations, master, slave, WORDS_LENGTH)
+	result = validations.lexicographicOrder
 
 	// Loop
 	while(validations.validWords && validations.lexicographicOrder) {
@@ -102,23 +120,18 @@ async function alienDictionary(words: string[], order: string) {
 		slave.char += 1;
 
 		// Data validation
-		const masterWordLength = words[master.word].length
-		const slaveWordLength = words[slave.word].length
-
-		const masterPointingToValidChar = master.char < masterWordLength
-		const slavePointingToValidChar = slave.char < slaveWordLength
-		const validChars = masterPointingToValidChar && slavePointingToValidChar
+		const { validChars, isValidLength } = areCharactersValid(master, slave, words)
 
 		if (validChars) {
 			// Updating validations
-			result = updateValidations(validations, master, slave, WORDS_LENGTH, result)
+			updateValidations(validations, master, slave, WORDS_LENGTH)
+			result = validations.lexicographicOrder
 
 			// Update char values
 			updateCharValues({words, CHAR_INDEX, master, slave})
 
 		} else {
 			// Validating words length
-			const isValidLength = masterWordLength <= slaveWordLength;
 
 			if (isValidLength) {
 				// Updating pointers
@@ -129,7 +142,8 @@ async function alienDictionary(words: string[], order: string) {
 				slave.char = 0;
 
 				// Updating validations
-				result = updateValidations(validations, master, slave, WORDS_LENGTH, result)
+				updateValidations(validations, master, slave, WORDS_LENGTH)
+				result = validations.lexicographicOrder
 
 				if (validations.validWords) {
 					// Update the charValues
@@ -141,7 +155,8 @@ async function alienDictionary(words: string[], order: string) {
 				slave.charValue = 0;
 
 				// Updating validations
-				result = updateValidations(validations, master, slave, WORDS_LENGTH, result)
+				updateValidations(validations, master, slave, WORDS_LENGTH)
+				result = validations.lexicographicOrder
 			}
 		}
 	}
