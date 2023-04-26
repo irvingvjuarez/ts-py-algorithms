@@ -10,6 +10,15 @@ class Merger {
 		nums2: Merger["_nums2"],
 		size2: Merger["_size2"]
 	) {
+		this.updateValues(nums1, size1, nums2, size2)
+	}
+
+	public updateValues(
+		nums1: Merger["_nums1"],
+		size1: Merger["_size1"],
+		nums2: Merger["_nums2"],
+		size2: Merger["_size2"]
+	) {
 		this._nums1 = nums1
 		this._size1 = size1
 
