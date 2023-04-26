@@ -22,6 +22,10 @@ class Merger {
 		this._nums2 = this._nums2.filter(value => value != 0)
 	}
 
+	protected isEmpty(arr: number[]) {
+		return !arr[0]
+	}
+
 	public sort() {
 		this.removeZerosInNums()
 		const mergedArr = []
@@ -29,10 +33,12 @@ class Merger {
 		while (mergedArr.length < (this._size1 + this._size2)) {
 			let minor: number[]
 
-			if (!this._nums1[0]) {
+			if (this.isEmpty(this._nums1)) {
 				minor = [...this._nums2]
-			} else if (!this._nums2[0]) {
+
+			} else if (this.isEmpty(this._nums2)) {
 				minor = [...this._nums1]
+
 			} else {
 
 				if (this._nums1[0] < this._nums2[0]) {
