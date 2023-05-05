@@ -21,7 +21,7 @@ class ContainerWithMostWaterTests(unittest.TestCase):
 			{"index": 8, "height": 7},
 		])
 
-	def test_highest_height_max_width(self):
+	def test_max_width_and_end_height(self):
 		container = Container([1, 8, 6, 2, 5, 4, 8, 3, 7])
 
 		highest_height = container.highest()
@@ -30,7 +30,10 @@ class ContainerWithMostWaterTests(unittest.TestCase):
 		highest_height_index = container.get_index(highest_height)
 		self.assertEqual(highest_height_index, 1)
 
-		self.assertEqual(container.max_width(highest_height_index), 7)
+		max_width, end_height = container.max_width(highest_height_index)
+
+		self.assertEqual(max_width, 7)
+		self.assertEqual(end_height, 7)
 
 	def test_greatest_possible_area(self):
 		container = Container([1, 8, 6, 2, 5, 4, 8, 3, 7])

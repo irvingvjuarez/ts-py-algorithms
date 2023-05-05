@@ -30,19 +30,29 @@ class Container:
 		distances = self.get_distances()
 		current_item = distances[index]
 
+		# Updating distances to remove current_item from them
 		distances = [value for value_index, value in enumerate(distances) if value_index != index]
 
-		possible_matchs = list(
+		possible_matches = list(
 			filter(lambda x: x["height"] <= current_item["height"], distances)
 		)
 
 		# Get the widths in terms of the index
-		widths = [abs(current_item["index"] - x["index"]) for x in distances]
+		for x in possible_matches:
+			x["width"] = abs(current_item["index"] - x["index"])
 
-		# Get the max width
-		max_width = reduce(lambda a, b: a if a > b else b, widths)
+		# Get the match with the max width
+		if (len(possible_matches)):
+			match = reduce(lambda a, b: a if a["width"] > b["width"] else b, possible_matches)
+		else:
+			match = current_item
+			match["width"] = 1
 
-		return max_width
+		# Assigning the results
+		max_width = match["width"]
+		end_height = match["height"]
+
+		return max_width, end_height
 
 	def greatest_area(self):
 		areas = []
@@ -50,13 +60,12 @@ class Container:
 		# Get max width of each index
 		distances = self.get_distances()
 		for index, item in enumerate(distances):
-			max_width = self.max_width(index)
+			max_width, end_height = self.max_width(index)
 
-			# Multiply max_width*current_height
+			# Multiply max_width*end_height
 			# Save that value in a list
-			areas.append(max_width * item["height"])
+			areas.append(max_width * end_height)
 
-		print(areas)
 		# Get the highest value
 		greatest_area = reduce(lambda a, b: a if a > b else b, areas)
 		return greatest_area
