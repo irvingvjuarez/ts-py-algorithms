@@ -1,6 +1,6 @@
 from typing import List
 
-def sortColors(nums: List[int]):
+def sort_colors(nums: List[int]):
 	head = 0
 	tail = len(nums) - 1
 
