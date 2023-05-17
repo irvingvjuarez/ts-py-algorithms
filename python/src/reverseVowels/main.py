@@ -19,5 +19,8 @@ def reverse_vowels(s: str):
 			tail -= 1
 		elif s[tail] in vowels:
 			head += 1
+		else:
+			head += 1
+			tail -= 1
 
 	return "".join(s)
