@@ -1,21 +1,21 @@
 import { describe, test, expect } from "vitest"
-import validatePalindrome from "./main"
+import ValidatePalindrome from "./main"
 
 describe("Palindrome Test", () => {
 	test("Testing existence", async () => {
-		await expect(validatePalindrome).toBeDefined()
+		await expect(ValidatePalindrome).toBeDefined()
 	})
 
 	test("Testing correctness", async () => {
-		let result = validatePalindrome.solve("aba")
+		let result = ValidatePalindrome.solve("aba")
 		await expect(result).toBe(true)
 
-		result = validatePalindrome.solve("abca")
+		result = ValidatePalindrome.solve("abca")
 		await expect(result).toBe(true)
 	})
 
 	test("Testing failness", async () => {
-		let result = validatePalindrome.solve("acbba")
+		let result = ValidatePalindrome.solve("acbba")
 		await expect(result).toBe(false)
 	})
 })
