@@ -1,4 +1,5 @@
 import { describe, test, expect } from "vitest"
+import IntervalIntersecter from "./main"
 
 describe("Interval Intersecter tests", () => {
 	test("Testing existence", async () => {
