@@ -23,7 +23,7 @@ class IntervalIntersecter {
 			secondList[secondList.length - 1][1]
 		)
 
-		this.setupIntervals()
+		this.setupIntervals(firstList, secondList)
 
 		this.pointer = Math.min(this.int1.head(), this.int2.head())
 	}
@@ -58,6 +58,11 @@ class IntervalIntersecter {
 		return intersections
 	}
 
+	private showIntervalIndexes() {
+		console.log("Int1 index:", this.int1.index)
+		console.log("Int2 index:", this.int2.index)
+	}
+
 	protected movePointerForward() {
 		this.pointer++
 
@@ -68,6 +73,10 @@ class IntervalIntersecter {
 		if (this.pointer > this.int2.tail()) {
 			this.updateInterval(2)
 		}
+
+		// Debugging
+		console.log("Pointer:", this.pointer)
+		this.showIntervalIndexes()
 	}
 
 	protected updateInterval(intervalId: number) {
@@ -82,11 +91,11 @@ class IntervalIntersecter {
 		return this.pointer <= this.int1.tail() && this.pointer >= this.int2.head()
 	}
 
-	protected setupIntervals() {
+	protected setupIntervals(firstList: IntervalList, secondList: IntervalList) {
 		this.int1 = {
 			index: 0,
 			value: function() {
-				return this.firstList[this.index]
+				return firstList[this.index]
 			},
 			head: function() {
 				return this.value()[0]
@@ -99,7 +108,7 @@ class IntervalIntersecter {
 		this.int2 = {
 			index: 0,
 			value: function() {
-				return this.secondList[this.index]
+				return secondList[this.index]
 			},
 			head: function() {
 				return this.value()[0]
