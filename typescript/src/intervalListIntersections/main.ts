@@ -36,6 +36,10 @@ class IntervalIntersecter {
 		while (this.limit > this.pointer) {
 			let overlap = this.isOverlapping()
 
+			// Debugging
+			console.log("Pointer:", this.pointer)
+			console.log("Overlapping:", overlap)
+
 			if (overlap) {
 				if (currentOverlapFirstIndex) {
 					currentOverlapFirstIndex = false
@@ -73,10 +77,6 @@ class IntervalIntersecter {
 		if (this.pointer > this.int2.tail()) {
 			this.updateInterval(2)
 		}
-
-		// Debugging
-		console.log("Pointer:", this.pointer)
-		this.showIntervalIndexes()
 	}
 
 	protected updateInterval(intervalId: number) {
@@ -88,7 +88,10 @@ class IntervalIntersecter {
 	}
 
 	protected isOverlapping() {
-		return this.pointer <= this.int1.tail() && this.pointer >= this.int2.head()
+		const int1Constraints = this.pointer >= this.int1.head() && this.pointer <= this.int1.tail()
+		const int2Constraints = this.pointer >= this.int2.head() && this.pointer <= this.int2.tail()
+
+		return int1Constraints && int2Constraints
 	}
 
 	protected setupIntervals(firstList: IntervalList, secondList: IntervalList) {
