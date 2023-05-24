@@ -19,13 +19,17 @@ class IntervalIntersecter {
 		this.secondList = secondList
 
 		this.limit = Math.max(
-			firstList[firstList.length - 1][1],
-			secondList[secondList.length - 1][1]
+			firstList[firstList.length - 1]?.[1],
+			secondList[secondList.length - 1]?.[1]
 		)
 
 		this.setupIntervals(firstList, secondList)
 
 		this.pointer = Math.min(this.int1.head(), this.int2.head())
+	}
+
+	protected intervalListsEmpty() {
+		return !this.int1.value() || !this.int2.value()
 	}
 
 	public solve() {
@@ -34,6 +38,10 @@ class IntervalIntersecter {
 		let currentOverlapFirstIndex = true
 		let int1CurrentIndex: number = this.int1.index
 		let int2CurrentIndex: number = this.int2.index
+
+		if (this.intervalListsEmpty()) {
+			return intersections
+		}
 
 		while (this.limit > this.pointer) {
 			const overlap = this.isOverlapping()
@@ -117,10 +125,10 @@ class IntervalIntersecter {
 				return firstList[this.index]
 			},
 			head: function() {
-				return this.value()[0]
+				return this.value()?.[0]
 			},
 			tail: function() {
-				return this.value()[1]
+				return this.value()?.[1]
 			}
 		}
 
@@ -130,10 +138,10 @@ class IntervalIntersecter {
 				return secondList[this.index]
 			},
 			head: function() {
-				return this.value()[0]
+				return this.value()?.[0]
 			},
 			tail: function() {
-				return this.value()[1]
+				return this.value()?.[1]
 			}
 		}
 	}
