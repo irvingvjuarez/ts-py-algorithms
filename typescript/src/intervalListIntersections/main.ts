@@ -32,22 +32,34 @@ class IntervalIntersecter {
 		const intersections: IntervalList = []
 		let currentOverlap: number[] = []
 		let currentOverlapFirstIndex = true
+		let int1CurrentIndex: number = this.int1.index
+		let int2CurrentIndex: number = this.int2.index
 
 		while (this.limit > this.pointer) {
-			let overlap = this.isOverlapping()
-
-			// Debugging
-			console.log("Pointer:", this.pointer)
-			console.log("Overlapping:", overlap)
+			const overlap = this.isOverlapping()
+			const intervalIndexesMatch = int1CurrentIndex === this.int1.index && int2CurrentIndex === this.int2.index
 
 			if (overlap) {
+
+				if (!intervalIndexesMatch) {
+					currentOverlapFirstIndex = true
+					intersections.push(currentOverlap)
+					currentOverlap = []
+				}
+
 				if (currentOverlapFirstIndex) {
+					int1CurrentIndex = this.int1.index
+					int2CurrentIndex = this.int2.index
+
 					currentOverlapFirstIndex = false
 					currentOverlap.push(this.pointer, this.pointer)
 				} else {
 					currentOverlap[1] = this.pointer
 				}
 			} else {
+				int1CurrentIndex = this.int1.index
+				int2CurrentIndex = this.int2.index
+
 				if (currentOverlap.length) {
 					intersections.push(currentOverlap)
 				}
@@ -57,6 +69,10 @@ class IntervalIntersecter {
 			}
 
 			this.movePointerForward()
+
+			if (this.pointer >= this.limit) {
+				intersections.push(currentOverlap)
+			}
 		}
 
 		return intersections
