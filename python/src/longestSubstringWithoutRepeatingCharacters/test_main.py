@@ -22,5 +22,8 @@ class TestLongestSubstring(unittest.TestCase):
 		result = get_longest_substring("e")
 		self.assertEqual(result, 1)
 
+		result = get_longest_substring("abcdaefas")
+		self.assertEqual(result, 6)
+
 if __name__ == "__main__":
 	unittest.main()
