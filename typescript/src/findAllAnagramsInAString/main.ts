@@ -1,8 +1,8 @@
-function createSubstringFn(s: string, anagramChars: string) {
-	return getSubstringFn.bind(this, s, anagramChars)
+function createSubstringFn(s: string) {
+	return getSubstringFn.bind(this, s)
 }
 
-function getSubstringFn(s: string, anagramChars: string, p1: number, p2: number): string {
+function getSubstringFn(s: string, p1: number, p2: number): string {
 	return s
 		.slice(p1, p2)
 		.split("")
@@ -28,9 +28,15 @@ function isSubstringAnagram(substring: string, anagramChars: string) {
 	return allCharsIncluded(substringList, anagramChars) && noDuplicatedChars(substringList, anagramChars)
 }
 
+function isP2ValueInvalid(substring: string, p: string, p2Value: string) {
+	return !(
+		substring.length < p.length && p.includes(p2Value) && !substring.includes(p2Value)
+	)
+}
+
 function getAnagrams(s: string, p: string) {
 	let p1 = 0, p2 = p1 + 1
-	const getSubstring = createSubstringFn(s, p)
+	const getSubstring = createSubstringFn(s)
 	let substring = getSubstring(p1, p2)
 	const anagramsFirstIndex: number[] = []
 
@@ -39,9 +45,8 @@ function getAnagrams(s: string, p: string) {
 			p1++
 		} else {
 			const p2Value = s[p2] || s[p2 - 1]
-			const isP2ValueValid = substring.length < p.length && p.includes(p2Value) && !substring.includes(p2Value)
 
-			if (!isP2ValueValid) {
+			if (isP2ValueInvalid(substring, p, p2Value)) {
 				if (isSubstringAnagram(substring, p)) anagramsFirstIndex.push(p1)
 				p1++
 			}
