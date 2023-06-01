@@ -39,7 +39,7 @@ function getAnagrams(s: string, p: string) {
 			p1++
 		} else {
 			const p2Value = s[p2] || s[p2 - 1]
-			const isP2ValueValid = p.includes(p2Value) && !substring.includes(p2Value)
+			const isP2ValueValid = substring.length < p.length && p.includes(p2Value) && !substring.includes(p2Value)
 
 			if (!isP2ValueValid) {
 				if (isSubstringAnagram(substring, p)) anagramsFirstIndex.push(p1)
