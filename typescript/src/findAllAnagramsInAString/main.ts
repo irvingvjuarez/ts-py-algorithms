@@ -6,8 +6,26 @@ function getSubstringFn(s: string, anagramChars: string, p1: number, p2: number)
 	return s
 		.slice(p1, p2)
 		.split("")
-		.filter(char => anagramChars.includes(char))
 		.join("")
+}
+
+function allCharsIncluded(substringList: string[], anagramChars: string) {
+	return substringList.every(item => anagramChars.includes(item))
+}
+
+function noDuplicatedChars(substringList: string[], anagramChars: string) {
+	substringList.sort()
+	const charsCounter = anagramChars
+		.split("")
+		.map(char => substringList.lastIndexOf(char) - substringList.indexOf(char) + 1)
+
+	return !charsCounter.some(charCounter => charCounter > 1)
+}
+
+function isSubstringAnagram(substring: string, anagramChars: string) {
+	const substringList = substring.split("")
+
+	return allCharsIncluded(substringList, anagramChars) && noDuplicatedChars(substringList, anagramChars)
 }
 
 function getAnagrams(s: string, p: string) {
@@ -24,7 +42,7 @@ function getAnagrams(s: string, p: string) {
 			const isP2ValueValid = p.includes(p2Value) && !substring.includes(p2Value)
 
 			if (!isP2ValueValid) {
-				if (substring.length === p.length) anagramsFirstIndex.push(p1)
+				if (isSubstringAnagram(substring, p)) anagramsFirstIndex.push(p1)
 				p1++
 			}
 		}
