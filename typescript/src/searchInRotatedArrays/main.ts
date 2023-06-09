@@ -1,54 +1,35 @@
 function fixRotation(nums: number[], target: number, start: number, end: number) {
-	let pointerDirection
+	const isTargetOnTheLeftSide = target > nums[start]
+	const isPointerRightwise = isTargetOnTheLeftSide ? false : true
 
-	if (target > nums[start]) { // Moving the end pointer
-		pointerDirection = "left"
-	} else { // Moving the start pointer
-		pointerDirection = "right"
+	function preceedingValue() {
+		const nextNumberIndex = isPointerRightwise ? start + 1 : end - 1
+		return nums[nextNumberIndex]
 	}
 
-	const preceedingValue = () => {
-		let value = pointerDirection === "right"
-			? nums[start + 1]
-			: nums[end - 1]
-		return value
+	function currentValue() {
+		return isPointerRightwise ? start : end
 	}
 
-	const currentValue = () => {
-		let value = pointerDirection === "right" ? start : end
-		return value
+	function movePointer() {
+		if (isPointerRightwise) start++
+		if (!isPointerRightwise) end--
 	}
 
 	while ( preceedingValue() > currentValue() ) {
-		if (pointerDirection === "right") {
-			start++
-		} else {
-			end--
-		}
+		movePointer()
 	}
 
-	if (pointerDirection === "right") {
-		start++
-	} else {
-		end--
-	}
-
+	movePointer()
 	return { start, end }
 }
 
 function getTargetPosition(nums: number[], target: number) {
-	let start = 0
-	let end = nums.length - 1
+	let { start, end } = fixRotation(nums, target, 0, nums.length - 1)
 	let middle: number
 
-	const updatedPointers = fixRotation(nums, target, start, end)
-	start = updatedPointers.start
-	end = updatedPointers.end
-
 	console.log("Target:", target)
-	console.log("Start:", start)
-	console.log("End:", end)
-	console.log("Nums:", nums)
+	console.log("Nums scope:", nums.slice(start, end))
 
 	return 0
 }
