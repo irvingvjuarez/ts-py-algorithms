@@ -28,10 +28,19 @@ function getTargetPosition(nums: number[], target: number) {
 	let { start, end } = fixRotation(nums, target, 0, nums.length - 1)
 	let middle: number
 
-	console.log("Target:", target)
-	console.log("Nums scope:", nums.slice(start, end))
+	while (start < end) {
+		middle = Math.round((start + end) / 2)
+		if (nums[middle] === target) return middle
 
-	return 0
+		if (nums[middle] > target) {
+			end = middle === end ? end - 1 : middle
+		} else {
+			start = middle === start ? start - 1 : middle
+		}
+	}
+
+	if (nums[start] === target) return start
+	return -1
 }
 
 export default getTargetPosition
