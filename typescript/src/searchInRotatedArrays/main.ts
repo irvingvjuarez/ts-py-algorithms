@@ -30,9 +30,10 @@ function getTargetPosition(nums: number[], target: number) {
 
 	while (start < end) {
 		middle = Math.round((start + end) / 2)
-		if (nums[middle] === target) return middle
+		const middleValue = nums[middle]
+		if (middleValue === target) return middle
 
-		if (nums[middle] > target) {
+		if (middleValue > target) {
 			end = middle === end ? end - 1 : middle
 		} else {
 			start = middle === start ? start - 1 : middle
