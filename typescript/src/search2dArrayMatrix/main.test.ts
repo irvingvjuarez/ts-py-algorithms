@@ -7,7 +7,7 @@ describe("searchIn2dArray tests", () => {
 	})
 
 	test("Test correctness", async () => {
-		let result = searchIn2dArray([ [1 ,3 , 5], [10,15,19], [23,29,31] ])
+		let result = searchIn2dArray([ [1 ,3 , 5], [10,15,19], [23,29,31] ], 3)
 		await expect(result).toBe(true)
 	})
 })
