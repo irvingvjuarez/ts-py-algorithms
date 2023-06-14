@@ -4,7 +4,13 @@ function searchIn2dArray(nums: Array<number[]>, target: number) {
 	let row = 0
 	let middle
 
-	while(row < nums.length) {
+	while(p1 < p2 || row < nums.length) {
+		if (p2 === p1 + 1) {
+			if (nums[row][p1] === target || nums[row][p2] === target)
+				return true
+			else return false
+		}
+
 		if (target >= nums[row][p1] && target <= nums[row][p2]){
 			// Binary search in this row
 			middle = Math.round((p1 + p2) / 2)
